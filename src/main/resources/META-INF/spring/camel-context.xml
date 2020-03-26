@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:camel="http://camel.apache.org/schema/spring"
+        xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://camel.apache.org/schema/spring
+           http://camel.apache.org/schema/spring/camel-spring.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.2.xsd
+       ">
+    <context:property-placeholder location="classpath:/broker.properties" />
+
+    <bean id="sqsClient" class="com.amazonaws.services.sqs.AmazonSQSClient">
+        <constructor-arg>
+            <bean class="com.amazonaws.auth.BasicSessionCredentials">
+                <constructor-arg value="${aws.AccessKeyId}" />
+                <constructor-arg value="${aws.SecretAccessKey}" />
+                <constructor-arg value="${aws.SessionToken}" />
+            </bean>
+        </constructor-arg>
+        <property name="region" ref="awsRegion" />
+    </bean>
+
+    <bean id="awsRegion" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetClass" value="com.amazonaws.regions.RegionUtils" />
+        <property name="targetMethod" value="getRegion" />
+        <property name="arguments">
+            <list>
+                <value>${sqs.region}</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/> -->
+
+    <camelContext id="sqsToSqs" xmlns="http://camel.apache.org/schema/spring">
+        <propertyPlaceholder id="properties" location="classpath:/broker.properties" />
+        <!-- <endpoint id="sqs_request" uri="aws-sqs://${sqs.request_queue_name}?amazonSQSClient=#sqsClient&amp;concurrentConsumers=5&amp;greedy=true"/> -->
+        <!-- <endpoint id="sqs_response" uri="aws-sqs://${sqs.reply_queue_name}?amazonSQSClient=#sqsClient"/> -->
+
+        <route id="sqsToSqs">
+            <from uri="aws-sqs://new_request?amazonSQSClient=#sqsClient&amp;concurrentConsumers=5&amp;greedy=true" />
+            <!-- <from uri="ref:sqs_request" /> -->
+            <log message="From SQS to MQ ${body} ${date:now:MMDDyy-HHmmss}" />
+            <to uri="aws-sqs://new_response?amazonSQSClient=#sqsClient" />
+            <!-- <to uri="ref:sqs_response" /> -->
+        </route>
+
+    </camelContext>
+</beans>

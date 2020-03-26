@@ -1,0 +1,17 @@
+*.bin
+*.class
+.idea
+*.iml
+*jks
+*pem
+*tgz
+*jar
+*backup
+artefacts
+node_modules
+package-lock.json
+safe
+secrets
+target
+.terraform
+terraform.tfstate
