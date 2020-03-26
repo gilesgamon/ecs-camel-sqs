@@ -38,15 +38,13 @@
 
     <camelContext id="sqsToSqs" xmlns="http://camel.apache.org/schema/spring">
         <propertyPlaceholder id="properties" location="classpath:/broker.properties" />
-        <!-- <endpoint id="sqs_request" uri="aws-sqs://${sqs.request_queue_name}?amazonSQSClient=#sqsClient&amp;concurrentConsumers=5&amp;greedy=true"/> -->
-        <!-- <endpoint id="sqs_response" uri="aws-sqs://${sqs.reply_queue_name}?amazonSQSClient=#sqsClient"/> -->
+        <endpoint id="sqs_request" uri="aws-sqs://${sqs.request_queue_name}?amazonSQSClient=#sqsClient&amp;concurrentConsumers=5&amp;greedy=true"/>
+        <endpoint id="sqs_response" uri="aws-sqs://${sqs.reply_queue_name}?amazonSQSClient=#sqsClient"/>
 
         <route id="sqsToSqs">
-            <from uri="aws-sqs://new_request?amazonSQSClient=#sqsClient&amp;concurrentConsumers=5&amp;greedy=true" />
-            <!-- <from uri="ref:sqs_request" /> -->
+            <from uri="ref:sqs_request" />
             <log message="From SQS to MQ ${body} ${date:now:MMDDyy-HHmmss}" />
-            <to uri="aws-sqs://new_response?amazonSQSClient=#sqsClient" />
-            <!-- <to uri="ref:sqs_response" /> -->
+            <to uri="ref:sqs_response" />
         </route>
 
     </camelContext>

@@ -11,7 +11,6 @@ artefacts
 node_modules
 package-lock.json
 safe
-secrets
 target
 .terraform
 terraform.tfstate

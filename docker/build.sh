@@ -17,6 +17,6 @@ cd ../iac/ecr
 docker tag camel_sqs_only_broker_runtime:latest 272154369820.dkr.ecr.eu-west-1.amazonaws.com/camel-broker-sqs-only:latest
 docker push 272154369820.dkr.ecr.eu-west-1.amazonaws.com/camel-broker-sqs-only:latest
 
-cd ../iac/ecs
+cd ../ecs
 terraform init
 terraform apply

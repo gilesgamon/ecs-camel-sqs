@@ -1,14 +1,5 @@
 #!/bin/bash
 
-# Importing credentials from the ECS Task IAM Role
-#{
-#    "AccessKeyId": "ACCESS_KEY_ID",
-#    "Expiration": "EXPIRATION_DATE",
-#    "RoleArn": "TASK_ROLE_ARN",
-#    "SecretAccessKey": "SECRET_ACCESS_KEY",
-#    "Token": "SECURITY_TOKEN_STRING"
-#}
-
 if [ $AWS_CONTAINER_CREDENTIALS_RELATIVE_URI ] ; then
 	echo "export AWS_CONTAINER_CREDENTIALS_RELATIVE_URI=$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI" >> /root/.profile
 

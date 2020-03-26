@@ -15,7 +15,6 @@
         <slf4j-version>1.7.30</slf4j-version>
         <javax-version>2.0.1</javax-version>
         <activemq-camel-version>5.15.11</activemq-camel-version>
-        <aws-version>2.25.0</aws-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <camel-aws-version>2.25.0</camel-aws-version>
         <aws-sdk-version>1.11.747</aws-sdk-version>
